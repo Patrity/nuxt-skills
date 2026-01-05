@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/nuxt/nuxt",
+  "branch": "main",
+  "docs_path": "docs",
+  "topics": {
+    "usefetch": {
+      "last_fetch": "2026-01-05T07:26:24.906607",
+      "source_path": "4.api/2.composables/use-fetch.md"
+    }
+  }
+}

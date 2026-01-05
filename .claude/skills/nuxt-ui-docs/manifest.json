@@ -1,0 +1,34 @@
+{
+  "source": "https://github.com/nuxt/ui",
+  "branch": "v4",
+  "docs_path": "docs/content/docs/2.components",
+  "last_full_update": null,
+  "last_commit_sha": "f422de8326aac1c09ecb326b5e4157cfac1d12b8",
+  "components": {
+    "button": {
+      "last_fetch": "2026-01-05T07:01:49.061921",
+      "source_path": "button.md",
+      "cached_file": "cache/button.md"
+    },
+    "modal": {
+      "last_fetch": "2026-01-05T07:02:24.795939",
+      "source_path": "modal.md",
+      "cached_file": "cache/modal.md"
+    },
+    "dashboardpanel": {
+      "last_fetch": "2026-01-05T07:11:20.332577",
+      "source_path": "dashboard-panel.md",
+      "cached_file": "cache/dashboardpanel.md"
+    },
+    "authform": {
+      "last_fetch": "2026-01-05T07:13:10.962966",
+      "source_path": "auth-form.md",
+      "cached_file": "cache/authform.md"
+    },
+    "form": {
+      "last_fetch": "2026-01-05T07:13:17.475700",
+      "source_path": "form.md",
+      "cached_file": "cache/form.md"
+    }
+  }
+}
