@@ -11,6 +11,24 @@ Claude's training data doesn't include Nuxt 4 or Nuxt UI v4. This setup:
 - **Keeps context low** by loading docs on-demand, not preloading
 - **Provides conventions** via auto-loading rules for `.vue` files
 
+## Why Not Use MCP Servers?
+
+The Nuxt team provides ready-to-use MCP servers, but MCP tools consume context tokens even when not in use. Skills load context on-demand only when needed.
+
+### Token Comparison
+
+| Category | With MCP | Skills Only | Difference |
+|----------|----------|-------------|------------|
+| System prompt | 3.3k | 3.3k | — |
+| System tools | 15.4k | 15.1k | -0.3k |
+| MCP tools | 15.0k | — | -15.0k |
+| Memory files | 1.2k | 1.2k | — |
+| **Total used** | **80.0k (40%)** | **64.6k (32%)** | **-15.4k** |
+| Free space | 120.0k | 135.4k | +15.4k |
+
+> **~15k token savings** — significant for users on API plans where every token counts.
+
+
 ## Requirements
 
 - **Python 3** - Required for running fetch scripts
@@ -22,10 +40,10 @@ Claude's training data doesn't include Nuxt 4 or Nuxt UI v4. This setup:
 
 ```bash
 # Clone this repo
-git clone https://github.com/yourusername/claude-nuxt-setup.git
+git clone https://github.com/Patrity/nuxt-claudecode.git
 
 # Copy .claude directory to your project
-cp -r claude-nuxt-setup/.claude /path/to/your/nuxt-project/
+cp -r nuxt-claudecode/.claude /path/to/your/nuxt-project/
 ```
 
 ### Option 2: Use as Template
