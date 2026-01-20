@@ -1,12 +1,13 @@
 # Claude Code Setup for Nuxt 4 + Nuxt UI v4
 
 A ready-to-use Claude Code configuration for Nuxt 4 and Nuxt UI v4 development. Solves the problem of LLM knowledge cutoff by fetching current documentation on-demand.
+This skill uses a 24 hour caching system and always fetches the latest docs. The cache can be cleared at any time in the event of a major release by clearing the manifest json file.
 
 ## Why This Exists
 
-Claude's training data doesn't include Nuxt 4 or Nuxt UI v4. This setup:
+Many LLMs context windows do not include Nuxt 4 or Nuxt UI v4. This setup:
 
-- **Forces** Claude to fetch current docs before writing code
+- **Forces** LLMs to fetch current docs before writing code
 - **Caches** documentation locally with smart invalidation
 - **Keeps context low** by loading docs on-demand, not preloading
 - **Provides conventions** via auto-loading rules for `.vue` files
@@ -36,7 +37,20 @@ The Nuxt team provides ready-to-use MCP servers, but MCP tools consume context t
 
 ## Quick Start
 
-### Option 1: Copy to Your Project
+### Option 1 (recommended): Skills installer
+Pnpm:
+```bash
+pnpx skills add patrity/nuxt-skills
+```
+
+Npm:
+```
+npx skills add patrity/nuxt-skills
+```
+
+The [skills](https://skills.sh/) installer will automatically install the skills for the code assistant you are using such as Claude, OpenCode, etc.
+
+### Option 2: Copy to Your Project
 
 ```bash
 # Clone this repo
@@ -46,7 +60,7 @@ git clone https://github.com/Patrity/nuxt-claudecode.git
 cp -r nuxt-claudecode/.claude /path/to/your/nuxt-project/
 ```
 
-### Option 2: Use as Template
+### Option 3: Use as Template
 
 Click "Use this template" on GitHub to create a new repo with this setup.
 
@@ -254,3 +268,4 @@ MIT
 - [Nuxt UI](https://ui.nuxt.com) - The component library
 - [Claude Code](https://claude.ai/claude-code) - The AI coding assistant
 - [Claude Skills Docs](https://code.claude.com/docs/en/skills) - Documentation on how to create skills
+- [Skills.sh](https://skills.sh/) - Skills CLI
