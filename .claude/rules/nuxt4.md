@@ -63,6 +63,34 @@ const emit = defineEmits<{
 </script>
 ```
 
+### Component Naming
+
+Nuxt auto-generates component names from `directory + filename` with **duplicate segments removed**.
+
+**Directory prefix becomes part of the name:**
+```
+app/components/
+├── MyComponent.vue          → <MyComponent />
+├── chat/
+│   ├── Input.vue            → <ChatInput />
+│   └── MessageBubble.vue    → <ChatMessageBubble />
+```
+
+**DO NOT repeat the directory name in the filename:**
+```
+app/components/
+├── usage/
+│   ├── CostChart.vue        → <UsageCostChart />     ✅ GOOD
+│   ├── UsageCostChart.vue   → <UsageCostChart />     ❌ BAD (redundant, relies on dedup)
+│   ├── StatsCards.vue        → <UsageStatsCards />    ✅ GOOD
+```
+
+Nuxt deduplicates matching segments, so `usage/UsageFoo.vue` resolves to `<UsageFoo>` not
+`<UsageUsageFoo>`. But this is fragile — if the directory is plural (`agents/`) and the
+prefix is singular (`Agent`), dedup fails and you get `<AgentsAgentFoo>`.
+
+**Rule: Name files as if the directory prefix is already included.**
+
 ## Data Fetching
 
 - Use `useFetch()` for simple requests
@@ -77,6 +105,74 @@ These are auto-imported (don't manually import):
 - Nuxt: `useFetch`, `useAsyncData`, `useRoute`, `useRouter`, `useState`
 - Components in `app/components/`
 - Composables in `app/composables/`
+
+## Route Rules (SSR vs SPA)
+
+Use route rules to control rendering per-route:
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  routeRules: {
+    '/': { ssr: true },           // Landing page - SSR for SEO
+    '/login': { ssr: false },     // SPA mode - no SSR
+    '/register': { ssr: false },
+    '/lobby': { ssr: false },
+    '/game/**': { ssr: false },   // All game routes - SPA
+    '/api/**': { cors: true },    // API CORS
+  },
+})
+```
+
+### When to use `ssr: false`
+- Pages with browser-only libraries (Phaser, canvas, WebGL)
+- Auth-protected app pages (no SEO needed)
+- Real-time interactive pages (WebSocket connections)
+
+### When to use `ssr: true`
+- Landing pages (SEO important)
+- Marketing pages
+- Documentation/blog
+
+## Client-Only Components
+
+### .client.vue / .server.vue Suffixes
+Components that access browser APIs should use `.client.vue`. The suffix is **stripped**
+from the component name — reference them WITHOUT "Client" or "Server":
+
+```
+app/components/
+├── usage/
+│   ├── CostChart.client.vue    # Client-only (unovis charts)
+│   ├── CostChart.server.vue    # SSR placeholder skeleton
+│   └── StatsCards.vue           # Normal SSR component
+```
+
+```vue
+<template>
+  <!-- ✅ CORRECT — suffix is NOT part of the name -->
+  <UsageCostChart :data="data" />
+
+  <!-- ❌ WRONG — never include "Client" or "Server" in the tag -->
+  <UsageCostChartClient :data="data" />
+</template>
+```
+
+Nuxt automatically selects the `.client.vue` or `.server.vue` variant based on the
+rendering context. When both exist, the server renders the `.server.vue` version, then
+hydrates with the `.client.vue` version on the client.
+
+### ClientOnly Wrapper (Alternative)
+```vue
+<ClientOnly>
+  <SomeComponent />
+  <template #fallback>
+    <UIcon name="i-lucide-loader-2" class="animate-spin" />
+  </template>
+</ClientOnly>
+```
+
+**Warning:** `ClientOnly` prevents rendering but does NOT prevent module imports from executing. For libraries that access browser APIs at import time (like Phaser), use `.client.vue` instead.
 
 ## Skills Reference
 
